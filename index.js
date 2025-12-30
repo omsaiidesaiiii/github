@@ -11,6 +11,8 @@ const markCommit = (x, y) => {
     .add(1, "d")
     .add(x, "w")
     .add(y, "d")
+    .add(random.int(0, 23), "h") // Add random hour
+    .add(random.int(0, 59), "m") // Add random minute
     .format();
 
   const data = {
@@ -23,17 +25,27 @@ const markCommit = (x, y) => {
 };
 
 const makeCommits = (n) => {
-  if(n===0) return simpleGit().push();
+  if(n === 0) return simpleGit().push();
+  
   const x = random.int(0, 54);
   const y = random.int(0, 6);
-  const date = moment().subtract(1, "y").add(1, "d").add(x, "w").add(y, "d").format();
+  const date = moment()
+    .subtract(1, "y")
+    .add(1, "d")
+    .add(x, "w")
+    .add(y, "d")
+    .add(random.int(0, 23), "h") // Add random hour
+    .add(random.int(0, 59), "m") // Add random minute
+    .format();
 
   const data = {
     date: date,
   };
+  
   console.log(date);
+  
   jsonfile.writeFile(path, data, () => {
-    simpleGit().add([path]).commit(date, { "--date": date },makeCommits.bind(this,--n));
+    simpleGit().add([path]).commit(date, { "--date": date }, makeCommits.bind(this, --n));
   });
 };
 
